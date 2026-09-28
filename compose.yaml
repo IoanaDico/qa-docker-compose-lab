@@ -6,18 +6,30 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSGRES_USER=qa_user
-      - POSGRES_PASSWORD=qa_pass
-      - POSTGRES_DB=qa_db
+      - POSGRES_USER: qa_user
+      - POSGRES_PASSWORD: qa_pass
+      - POSTGRES_DB: qa_db
+      
     volumes: 
       - db_data:
-      healthcheck:
+      
+    healthcheck:
       test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 10s      
-  cache:
+      start_period: 5s  
+      
+    adminer:
+      image: adminer
+    ports:
+      - "5432:5432"
+ 
+    depends_on:
+      db:
+        condition: service_healthy  
+        
+  cache:  
     image: redis:7-alpine
 
   adminer:
