@@ -1,1 +1,21 @@
+version: '1.1'
 
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSGRES_USER=qa_user
+      - POSGRES_PASSWORD=qa_pass
+      - POSTGRES_DB=qa_db
+    volumes: 
+      - db_data:
+      
+  cache:
+    image: redis:7-alpine
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8888:8080"    
